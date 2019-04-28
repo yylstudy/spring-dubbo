@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://code.alibabatech.com/schema/dubbo
+        http://code.alibabatech.com/schema/dubbo/dubbo.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+    <!-- 消费方应用名，用于计算依赖关系，不是匹配条件，不要与提供方一样 -->
+    <dubbo:application name="consumer-of-helloworld-app" />
+    <!-- 使用multicast广播注册中心暴露发现服务地址 -->
+    <dubbo:registry address="zookeeper://172.18.150.129:2181" />
+    <!-- 生成远程服务代理，可以和本地bean一样使用demoService
+    check：关闭某个服务启动时检查（默认是开启的，开启时没有提供者时会报错）
+    -->
+    <dubbo:reference client="netty4" loadbalance="roundrobin"  id="demoService" interface="com.provider.service.DemoService">
+        <!--<dubbo:method name="sayHello" timeout="1000"/>-->
+    </dubbo:reference>
+    <!--关闭所有服务的启动检查-->
+    <!--<dubbo:consumer check="false"/>-->
+    <!--关闭注册中心启动时检查（注册订阅失败时报错）-->
+    <!--<dubbo:registry check="false"/>-->
+
+</beans>
